@@ -9,9 +9,11 @@ A dependable building block for more ambitious modules
 
 
 ## Features
+
  * Concatenation
  * Union
  * Simulation on input
+ * Lexer generation
  * NFA to DFA conversion
 
 Coming soon:
@@ -117,3 +119,20 @@ Returns true if the fragment accepts the input string.
 Notes:
 
 This uses a state machine to simulate the fragment on the input. NFAs will be copied and converted to DFAs.
+
+## Fragment.toString()
+
+```javascript
+
+// Write it to a file as a module
+fs.writeFile('lexer.js', a.toString() + '; module.exports = lexer', cb)
+
+// Or use the functionDef option to only get statements
+lexer = new Function('input', a.toString({functionDef: true}))
+lexer('haystack') // -> produces an array of tokens
+
+// No RegExp equivalent
+
+```
+
+Returns a lexer for the fragment.
