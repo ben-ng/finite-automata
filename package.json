@@ -1,6 +1,6 @@
 {
   "name": "finite-automata",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Unfancy state machine",
   "main": "lib/fragment",
   "scripts": {
@@ -20,8 +20,7 @@
     "url": "https://github.com/ben-ng/finite-automata/issues"
   },
   "homepage": "https://github.com/ben-ng/finite-automata",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "tape": "2.x.x"
   },
