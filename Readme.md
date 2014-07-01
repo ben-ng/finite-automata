@@ -66,7 +66,7 @@ Epsilon transitions should be denoted with the null character `'\0'`
  * accept - {array} An array of strings specifying the accept states of the fragment
  * transitions - {object} An object keyed by state
    * transitions[state] - {array} An array where even indices are characters and odd indices are states
-                                  e.g. key: ['c', 'q0', 'd', 'q1', '\0', 'q2']
+                                  e.g. `key: ['c', 'q0', 'd', 'q1', '\0', 'q2']`
 
 ## Fragment.concat()
 
@@ -84,7 +84,7 @@ Modifies the original fragment by concatening the argument.
 
 Notes:
 
-You can concatenate two fragments even if their states collide. Collisions will be resolved by appending the '`' character up to three times, after which the suffix will be of the form '`n' where n is the number of collisions that happened.
+You can concatenate two fragments even if their states collide. Collisions will be resolved by appending the '\`' character up to three times, after which the suffix will be of the form '\`n' where n is the number of collisions that happened.
 
 This will always result in a NFA.
 
