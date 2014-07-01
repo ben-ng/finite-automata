@@ -121,3 +121,36 @@ test('concat', function (t) {
   t.ok(fragment1.test('ab'), 'Concat should accept complete dfa')
   t.ok(!fragment1.test('abc'), 'Concat should not accept overflown dfa')
 })
+
+test('union', function (t) {
+  t.plan(4)
+
+  var fragment1 = new Fragment({
+        initial: 'q0'
+      , accept: ['q1']
+      , transitions: {
+          q0: [
+            'a',  'q1'
+          ]
+        , q1: []
+        }
+      })
+    , fragment2 = new Fragment({
+        initial: 'q0'
+      , accept: ['q1']
+      , transitions: {
+          q0: [
+            'b',  'q1'
+          ]
+        , q1: []
+        }
+      })
+
+  fragment1.union(fragment2)
+
+  t.ok(!fragment1.test(''), 'Union should not accept empty string')
+  t.ok(fragment1.test('a'), 'Union should accept solely first dfa')
+  t.ok(fragment1.test('b'), 'Union should accept solely second dfa')
+  t.ok(!fragment1.test('ab'), 'Union should not accept concatenated dfa')
+})
+

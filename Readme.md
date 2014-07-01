@@ -10,12 +10,12 @@ A dependable building block for more ambitious modules
 
 ## Features
  * Concatenation
+ * Union
  * Simulation on input
  * NFA to DFA conversion
 
 Coming soon:
 
- * Union
  * Keene Closure
 
 ## Usage
@@ -68,6 +68,10 @@ Epsilon transitions should be denoted with the null character `'\0'`
    * transitions[state] - {array} An array where even indices are characters and odd indices are states
                                   e.g. `key: ['c', 'q0', 'd', 'q1', '\0', 'q2']`
 
+Notes:
+
+You can perform operations on two fragments even if their states collide. Collisions will be resolved by appending the '\`' character up to three times, after which the suffix will be of the form '\`n' where n is the number of collisions that happened.
+
 ## Fragment.concat()
 
 ```javascript
@@ -82,11 +86,19 @@ a.concat(b)
 
 Modifies the original fragment by concatening the argument.
 
-Notes:
+## Fragment.union()
 
-You can concatenate two fragments even if their states collide. Collisions will be resolved by appending the '\`' character up to three times, after which the suffix will be of the form '\`n' where n is the number of collisions that happened.
+```javascript
 
-This will always result in a NFA.
+// a and b are Fragments
+a.union(b)
+
+// RegExp equivalent
+/(a|b)/
+
+```
+
+Modifies the original fragment by taking the union with the argument.
 
 ## Fragment.test()
 
