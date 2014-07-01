@@ -1,0 +1,40 @@
+{
+  "name": "finite-automata",
+  "version": "0.0.0",
+  "description": "Unfancy state machine",
+  "main": "lib/fragment",
+  "scripts": {
+    "test": "node test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ben-ng/finite-automata.git"
+  },
+  "keywords": [
+    "dfa",
+    "nfa"
+  ],
+  "author": "Ben Ng <me@benng.me>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ben-ng/finite-automata/issues"
+  },
+  "homepage": "https://github.com/ben-ng/finite-automata",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "tape": "2.x.x"
+  },
+  "testling": {
+    "files": "test.js",
+    "browsers": [
+      "ie/6..latest",
+      "chrome/22..latest",
+      "firefox/16..latest",
+      "safari/latest",
+      "opera/11.0..latest",
+      "iphone/6",
+      "ipad/6"
+    ]
+  }
+}
