@@ -25,7 +25,7 @@
     "tape": "2.x.x"
   },
   "testling": {
-    "files": "test.js",
+    "files": "test/index.js",
     "browsers": [
       "ie/6..latest",
       "chrome/22..latest",
