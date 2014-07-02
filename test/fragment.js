@@ -107,10 +107,11 @@ test('union', function (t) {
   t.plan(4)
 
   var fragment1 = new Fragment({
-        initial: 'q0'
+        // Force a collision here
+        initial: 'union`'
       , accept: ['q1']
       , transitions: {
-          q0: [
+          'union`': [
             'a',  'q1'
           ]
         , q1: []
@@ -139,10 +140,11 @@ test('kleene closure', function (t) {
   t.plan(6)
 
   var fragment1 = new Fragment({
-        initial: 'q0'
+        initial: 'repeat`'
       , accept: ['q1']
       , transitions: {
-          q0: [
+          // Force a collision
+          'repeat`': [
             'a',  'q1'
           ]
         , q1: []
@@ -173,10 +175,11 @@ test('(a|b)*c*(d|e)', function (t) {
   t.plan(11)
 
   var a = new Fragment({
-        initial: 'q0'
+        // Force a collision here
+        initial: 'repeat`'
       , accept: ['q1']
       , transitions: {
-          q0: [
+          'repeat`': [
             'a',  'q1'
           ]
         , q1: []

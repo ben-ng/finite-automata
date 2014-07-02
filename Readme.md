@@ -83,7 +83,7 @@ Epsilon transitions should be denoted with the null character `'\0'`
 
 Notes:
 
-You can perform operations on two fragments even if their states collide. Collisions will be resolved by appending the '\`' character up to three times, after which the suffix will be of the form '\`n' where n is the number of collisions that happened.
+You can perform operations on two fragments even if their states collide. Collisions will be resolved by appending the '\`' character.
 
 ## Fragment.concat()
 
