@@ -20,9 +20,12 @@
     "url": "https://github.com/ben-ng/finite-automata/issues"
   },
   "homepage": "https://github.com/ben-ng/finite-automata",
-  "dependencies": {},
+  "dependencies": {
+  },
   "devDependencies": {
-    "tape": "2.x.x"
+    "tape": "2.x.x",
+    "benchmark": "^1.0.0",
+    "jison-lex": "^0.3.4"
   },
   "testling": {
     "files": "test/index.js",
