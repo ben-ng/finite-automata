@@ -9,4 +9,4 @@ for(var i=0, ii=keywords.length; i<ii; ++i) {
 }
 
 fs.writeFileSync(__dirname + '/_lexer.js'
-  , automaton.toString() + ';module.exports=lexer;')
+  , automaton.toString({strategy: 'switchInt'}) + ';module.exports=lexer;')

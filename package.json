@@ -5,9 +5,9 @@
   "main": "lib/fragment",
   "scripts": {
     "test": "node test"
-  , "benchmark": "node benchmark"
-  , "browserBenchmark": "browserify -t brfs index.js > bundle.js"
-  , "profile": "node benchmark/v8/writeLexer && browserify -t brfs benchmark/v8/index.js > benchmark/v8/bundle.js && d8 --prof benchmark/v8/bundle.js && mac-tick-processor v8.log && unlink v8.log && unlink benchmark/v8/bundle.js"
+  , "b": "node benchmark"
+  , "bb": "browserify -t brfs benchmark/index.js > benchmark/bundle.js"
+  , "profile": "node benchmark/v8/writeLexer && browserify -t brfs benchmark/v8/index.js > benchmark/v8/bundle.js && d8 --trace-opt --trace-deopt --prof benchmark/v8/bundle.js && mac-tick-processor v8.log && unlink v8.log && unlink benchmark/v8/bundle.js"
   },
   "repository": {
     "type": "git",
