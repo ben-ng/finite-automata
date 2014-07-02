@@ -1,6 +1,6 @@
 # Finite Automata
 
-A dependable building block for more ambitious modules
+Unfancy Javascript state machines.
 
 [![Build Status](https://travis-ci.org/ben-ng/finite-automata.svg?branch=master)](https://travis-ci.org/ben-ng/finite-automata)
 
