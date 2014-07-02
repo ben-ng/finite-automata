@@ -17,14 +17,16 @@ test('minimize', function (t) {
                     , '1', 'C'
                     ]
               , 'B': [
-                      '0', 'D'
-                    , '1', 'D'
+                      // The rI forces a collision
+                      // Think of it as "D"
+                      '0', 'rI'
+                    , '1', 'rI'
                     ]
               , 'C': [
-                      '0', 'D'
-                    , '1', 'D'
+                      '0', 'rI'
+                    , '1', 'rI'
                     ]
-              , 'D': [
+              , 'rI': [
                       '0', 'E'
                     , '1', 'E'
                     ]
@@ -33,16 +35,16 @@ test('minimize', function (t) {
             })
   , dfa = minimize(nfa, ',')
 
-  t.equal(dfa.initial, 'A,rI', 'New initial state should be the reversed initial A')
-  t.deepEqual(dfa.accept, ['E,rI'], 'New accept state should be the reversed initial E')
+  t.equal(dfa.initial, 'A,rI`', 'New initial state should be the reversed initial A')
+  t.deepEqual(dfa.accept, ['E,rI`'], 'New accept state should be the reversed initial E')
   // Output: https://i.cloudup.com/3wBxFiLzPp-3000x3000.png
   // Almost, anyway. '0,1,2,3,5,6,7' - a -> '0,1,3,4,5,6'
   // is not in the image. Not sure if bug, or equivalent DFAs.
   t.deepEqual(dfa.transitions
     , {
-      'A,rI': [ '0', 'B,C', '1', 'B,C' ],
-      'B,C': [ '0', 'D', '1', 'D' ],
-      'D': [ '0', 'E,rI', '1', 'E,rI' ],
-      'E,rI': []
+      'A,rI`': [ '0', 'B,C', '1', 'B,C' ],
+      'B,C': [ '0', 'rI', '1', 'rI' ],
+      'rI': [ '0', 'E,rI`', '1', 'E,rI`' ],
+      'E,rI`': []
     }, 'The transition table should have four states')
 })

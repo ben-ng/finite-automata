@@ -4,7 +4,7 @@ var test = require('tape')
   , Fragment = require('../lib/fragment')
 
 test('lexer', function (t) {
-  t.plan(1)
+  t.plan(2)
 
   // Example taken from:
   // http://binarysculpting.com/2012/02/15/converting-dfa-to-nfa-by-subset-construction-regular-expressions-part-2
@@ -40,16 +40,21 @@ test('lexer', function (t) {
                       'c', '8'
                     ]
               , '8': [
-                      'd', '9'
+                      '\'', '9'
                     ]
               , '9': []
               }
             })
   , lexer = new Function('input', nfa.toString({functionDef: true}))
     // Valid tokens
-  , v0 = 'bbcd'
-  , v1 = 'abcd'
-  , tokens = ['  ', v0, '2 d3', v1, 'dsf', v0, 'adsf', v1, v0, v0, 'turkey', v0]
+  , v0 = 'bbc\''
+  , v1 = 'abc\''
+  , tokens = ['  ', v0, '2 \'3', v1, '\'sf', v0, 'a\'sf', v1, v0, v0, 'turkey', v0]
 
   t.deepEqual(lexer(tokens.join('')), [v0, v1, v0, v1, v0, v0, v0])
+
+  // Run without options
+  t.doesNotThrow(function () {
+    nfa.toString()
+  })
 })
