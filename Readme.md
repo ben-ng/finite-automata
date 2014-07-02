@@ -10,15 +10,13 @@ A dependable building block for more ambitious modules
 
 ## Features
 
- * Concatenation
- * Union
- * Simulation on input
+ * Concatenation `/ab/`
+ * Union `/a|b/`
+ * Repetition `/a*/` (Kleene Closure)
+ * Simulation on input `/ab/.test('haystack')`
  * Lexer generation
- * NFA to DFA conversion
-
-Coming soon:
-
- * Keene Closure
+ * NFA to DFA conversion (via Powerset Construction)
+ * DFA minimization (via Brzozowski's algorithm)
 
 ## Usage
 
@@ -102,6 +100,20 @@ a.union(b)
 
 Modifies the original fragment by taking the union with the argument.
 
+## Fragment.repeat()
+
+```javascript
+
+// a is a Fragment
+a.repeat()
+
+// RegExp equivalent
+/a*/
+
+```
+
+Modifies the fragment, allowing it to be repeated n times where n >= 0.
+
 ## Fragment.test()
 
 ```javascript
@@ -118,7 +130,7 @@ Returns true if the fragment accepts the input string.
 
 Notes:
 
-This uses a state machine to simulate the fragment on the input. NFAs will be copied and converted to DFAs.
+This uses a state machine to simulate the fragment on the input. NFAs will be copied and converted into minimal DFAs. This is a slow method -- if you need to run the fragment multiple times, compile a lexer with `.toString()`.
 
 ## Fragment.toString()
 
@@ -135,4 +147,4 @@ lexer('haystack') // -> produces an array of tokens
 
 ```
 
-Returns a lexer for the fragment.
+Returns a high performance lexer for the fragment based on a minimal DFA.

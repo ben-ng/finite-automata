@@ -29,7 +29,7 @@ test('construction', function (t) {
 })
 
 test('collisions', function (t) {
-  t.plan(8)
+  t.plan(4)
 
   // q0 - "a" -> q1
   var fragment1 = new Fragment({
@@ -66,27 +66,8 @@ test('collisions', function (t) {
     , 'Should resolve third collision with ```')
 
   fragment2._resolveCollisions(fragment2)
-  t.deepEqual(fragment2.states(), ['q0`4', 'q1`4']
-    , 'Should resolve fourth collision with `4')
-
-  fragment2._resolveCollisions(fragment2)
-  t.deepEqual(fragment2.states(), ['q0`5', 'q1`5']
-    , 'Should resolve fifth collision with `5')
-
-  fragment2._resolveCollisions(fragment2)
-  t.deepEqual(fragment2.states(), ['q0`6', 'q1`6']
-    , 'Should resolve sixth collision with `6')
-
-  fragment1._renameState('q0', 'q0`5')
-  fragment1._resolveCollisions(fragment2)
-  t.deepEqual(fragment1.states(), ['q1', 'q0`5']
-    , 'Should not collide')
-
-  fragment1._renameState('q0`5', 'q0`6')
-  fragment1._resolveCollisions(fragment2)
-  t.deepEqual(fragment1.states(), ['q1', 'q0`7']
-    , 'Should collide with q0`6')
-
+  t.deepEqual(fragment2.states(), ['q0````', 'q1````']
+    , 'Should resolve fourth collision with ````')
 })
 
 test('concat', function (t) {
@@ -152,5 +133,109 @@ test('union', function (t) {
   t.ok(fragment1.test('a'), 'Union should accept solely first dfa')
   t.ok(fragment1.test('b'), 'Union should accept solely second dfa')
   t.ok(!fragment1.test('ab'), 'Union should not accept concatenated dfa')
+})
+
+test('kleene closure', function (t) {
+  t.plan(6)
+
+  var fragment1 = new Fragment({
+        initial: 'q0'
+      , accept: ['q1']
+      , transitions: {
+          q0: [
+            'a',  'q1'
+          ]
+        , q1: []
+        }
+      })
+    , fragment2 = new Fragment({
+        initial: 'q0'
+      , accept: ['q1']
+      , transitions: {
+          q0: [
+            'b',  'q1'
+          ]
+        , q1: []
+        }
+      })
+
+  fragment1.repeat().concat(fragment2)
+
+  t.ok(!fragment1.test(''), 'Concat+Repeat should not accept empty string')
+  t.ok(!fragment1.test('a'), 'Concat+Repeat should not accept solely first dfa')
+  t.ok(fragment1.test('b'), 'Concat+Repeat should accept solely second dfa')
+  t.ok(fragment1.test('ab'), 'Concat+Repeat should accept concatenated dfa')
+  t.ok(fragment1.test('aab'), 'Concat+Repeat should accept concatenated dfa with repeat')
+  t.ok(fragment1.test('aaab'), 'Concat+Repeat should accept concatenated dfa with repeat')
+})
+
+test('(a|b)*c*(d|e)', function (t) {
+  t.plan(11)
+
+  var a = new Fragment({
+        initial: 'q0'
+      , accept: ['q1']
+      , transitions: {
+          q0: [
+            'a',  'q1'
+          ]
+        , q1: []
+        }
+      })
+    , b = new Fragment({
+        initial: 'q0'
+      , accept: ['q1']
+      , transitions: {
+          q0: [
+            'b',  'q1'
+          ]
+        , q1: []
+        }
+      })
+    , c = new Fragment({
+        initial: 'q0'
+      , accept: ['q1']
+      , transitions: {
+          q0: [
+            'c',  'q1'
+          ]
+        , q1: []
+        }
+      })
+    , d = new Fragment({
+        initial: 'q0'
+      , accept: ['q1']
+      , transitions: {
+          q0: [
+            'd',  'q1'
+          ]
+        , q1: []
+        }
+      })
+    , e = new Fragment({
+        initial: 'q0'
+      , accept: ['q1']
+      , transitions: {
+          q0: [
+            'e',  'q1'
+          ]
+        , q1: []
+        }
+      })
+
+  // WOAAAH
+  a.union(b).repeat().concat(c.repeat()).concat(d.union(e))
+
+  t.ok(!a.test(''), 'DFA should not accept empty string')
+  t.ok(!a.test('f'), 'DFA should not accept f')
+  t.ok(!a.test('abca'), 'DFA should not accept out of order a')
+  t.ok(!a.test('abcad'), 'DFA should not accept out of order a')
+  t.ok(!a.test('abcde'), 'DFA should not accept both d and e')
+  t.ok(!a.test('aaccdd'), 'DFA should not accept second d')
+  t.ok(a.test('ace'), 'DFA should accept ace')
+  t.ok(a.test('abcd'), 'DFA should accept abcd')
+  t.ok(a.test('aacd'), 'DFA should accept aacd')
+  t.ok(a.test('aaccd'), 'DFA should accept aaccd')
+  t.ok(a.test('aacce'), 'DFA should accept aacce')
 })
 

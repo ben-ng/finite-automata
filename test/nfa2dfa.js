@@ -46,8 +46,8 @@ test('reg2nfa', function (t) {
             })
   , dfa = nfa2dfa(nfa, ',')
 
-  t.equal(dfa.initial, '0,1,3')
-  t.deepEqual(dfa.accept, ['9'])
+  t.equal(dfa.initial, '0,1,3', 'Initial state should be the macrostate 0,1,3')
+  t.deepEqual(dfa.accept, ['9'], 'Accept state should be 9')
   // Output: https://i.cloudup.com/3wBxFiLzPp-3000x3000.png
   // Almost, anyway. '0,1,2,3,5,6,7' - a -> '0,1,3,4,5,6'
   // is not in the image. Not sure if bug, or equivalent DFAs.
