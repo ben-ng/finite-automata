@@ -47,12 +47,7 @@ var fragment1 = new Fragment({
       }
     })
 
-fragment1.concat(fragment2)
-
-t.ok(!fragment1.accepts('a'), 'Concat should not accept solely first dfa')
-t.ok(!fragment1.accepts('b'), 'Concat should not accept solely second dfa')
-t.ok(fragment1.accepts('ab'), 'Concat should accept complete dfa')
-t.ok(!fragment1.accepts('abc'), 'Concat should not accept overflown dfa')
+fragment1.union(fragment2).repeat().concat(fragment2)
 
 ```
 

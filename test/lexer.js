@@ -49,7 +49,7 @@ test('lexer', function (t) {
     // Valid tokens
   , v0 = 'bbcd'
   , v1 = 'abcd'
-  , tokens = ['  ', v0, '2 d3', v1, 'dsf', v0, 'adsf', v1, v0, v0, 'turkey']
+  , tokens = ['  ', v0, '2 d3', v1, 'dsf', v0, 'adsf', v1, v0, v0, 'turkey', v0]
 
-  t.deepEqual(lexer(tokens.join('')), [v0, v1, v0, v1, v0, v0])
+  t.deepEqual(lexer(tokens.join('')), [v0, v1, v0, v1, v0, v0, v0])
 })
