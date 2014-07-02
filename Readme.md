@@ -1,6 +1,6 @@
 # Finite Automata
 
-Unfancy Javascript state machines.
+Unfancy Javascript state machines. For people who like simple, reliable tools.
 
 [![Build Status](https://travis-ci.org/ben-ng/finite-automata.svg?branch=master)](https://travis-ci.org/ben-ng/finite-automata)
 
@@ -17,6 +17,7 @@ Unfancy Javascript state machines.
  * Lexer generation
  * NFA to DFA conversion (via Powerset Construction)
  * DFA minimization (via Brzozowski's algorithm)
+ * 100% branch and statement coverage
 
 ## Usage
 
