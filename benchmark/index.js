@@ -15,7 +15,7 @@ var Benchmark = require('benchmark')
   , jisonLexer
   , logger
 
-if(window) {
+if(window != null) {
   logger = function () {
     var output = Array.prototype.slice.call(arguments)
       , pre = document.getElementById('output')
