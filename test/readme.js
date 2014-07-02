@@ -7,35 +7,13 @@ test('readme demo', function (t) {
   t.plan(3)
 
 // Accepts "a"
-var fragment1 = new Fragment({
-      initial: 'q0'
-    , accept: ['q1']
-    , transitions: {
-        q0: ['a',  'q1']
-      , q1: []
-      }
-    })
+var fragment1 = new Fragment('a')
 
 // Accepts "b"
-var fragment2 = new Fragment({
-      initial: 'q0'
-    , accept: ['q1']
-    , transitions: {
-        q0: ['b',  'q1']
-      , q1: [] // Accept state
-      , q2: [] // Garbage state
-      }
-    })
+var fragment2 = new Fragment('b')
 
 // Accepts "c"
-var fragment3 = new Fragment({
-      initial: 'q0'
-    , accept: ['q1']
-    , transitions: {
-        q0: ['c',  'q1']
-      , q1: []
-      }
-    })
+var fragment3 = new Fragment('c')
 
 // Equivalent to /(a|b)*c/
 // Which matches all strings containing only a and b that end with c

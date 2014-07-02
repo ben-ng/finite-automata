@@ -26,35 +26,13 @@ Unfancy Javascript state machines. For people who like simple, reliable tools.
 var Fragment = require('finite-automata')
 
 // Accepts "a"
-var fragment1 = new Fragment({
-      initial: 'q0'
-    , accept: ['q1']
-    , transitions: {
-        q0: ['a',  'q1']
-      , q1: []
-      }
-    })
+var fragment1 = new Fragment('a')
 
 // Accepts "b"
-var fragment2 = new Fragment({
-      initial: 'q0'
-    , accept: ['q1']
-    , transitions: {
-        q0: ['b',  'q1']
-      , q1: [] // Accept state
-      , q2: [] // Garbage state
-      }
-    })
+var fragment2 = new Fragment('b')
 
 // Accepts "c"
-var fragment3 = new Fragment({
-      initial: 'q0'
-    , accept: ['q1']
-    , transitions: {
-        q0: ['c',  'q1']
-      , q1: []
-      }
-    })
+var fragment3 = new Fragment('c')
 
 // Equivalent to /(a|b)*c/
 // Which matches all strings containing only a and b that end with c
@@ -72,6 +50,25 @@ t.deepEqual(lexer('ababacbacc'), ['ababac', 'bac', 'c'], 'Should get all valid t
 
 ## Fragment
 
+There are two ways to construct a fragment.
+
+### Fragment({initial, accept, transitions})
+
+```javascript
+// Matches the string "1010"
+var binary = new Fragment({
+      initial: 0
+    , accept: [4]
+    , transitions: {
+        0: ['1',  1]
+      , 1: ['0',  2]
+      , 2: ['1',  3]
+      , 3: ['0',  4]
+      , 4: [] // accept state
+      }
+    })
+```
+
 A fragment is a finite automaton constructed with `initial` state, `accept` state(s), and a `transitions` map.
 
 Epsilon transitions should be denoted with the null character `'\0'`
@@ -81,6 +78,18 @@ Epsilon transitions should be denoted with the null character `'\0'`
  * transitions - {object} An object keyed by state
    * transitions[state] - {array} An array where even indices are characters and odd indices are states
                                   e.g. `key: ['c', 'q0', 'd', 'q1', '\0', 'q2']`
+
+
+### Fragment(string)
+
+```javascript
+// Matches "1010" in a shorthand way
+var binary = new Fragment('1010')
+
+binary.test('1010') // => true
+```
+
+If you supply a string to the constructor, it will be turned into a DFA that only recognizes that string.
 
 Notes:
 
