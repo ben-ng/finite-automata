@@ -16,7 +16,6 @@ var Benchmark = require('benchmark')
   , intLexer
   , arrayCharLexer
   , functionPointerLexer
-  , fastFunctionPointerLexer
   , defaultLexer
   , logger
   , max = keywords.length - 1
@@ -48,7 +47,6 @@ arrayCharLexer = new Function('input', automaton.toString({functionDef: true, st
 charLexer = new Function('input', automaton.toString({functionDef: true, strategy: 'switchChar'}))
 intLexer = new Function('input', automaton.toString({functionDef: true, strategy: 'switchInt'}))
 functionPointerLexer = new Function('input', automaton.toString({functionDef: true, strategy: 'functionPointer'}))
-fastFunctionPointerLexer = new Function('input', automaton.toString({functionDef: true, strategy: 'fastFunctionPointer'}))
 defaultLexer = new Function('input', automaton.toString({functionDef: true, strategy: 'default'}))
 
 // add tests
@@ -74,32 +72,12 @@ suite
   testString = randWord + jquery
   functionPointerLexer(testString)
 })
-.add('finite-automata (array[function] w/ micro-optimizations)', function() {
-  var randWord = keywords[Math.floor(Math.random() * (max - min + 1)) + min]
-  testString = randWord + jquery
-  fastFunctionPointerLexer(testString)
-})
 .add('finite-automata (default)', function() {
   var randWord = keywords[Math.floor(Math.random() * (max - min + 1)) + min]
   testString = randWord + jquery
   defaultLexer(testString)
 })
-.add('native regex (repeated)', function () {
-  // Make sure v8 can't cheat
-  var randWord = keywords[Math.floor(Math.random() * (max - min + 1)) + min]
-  testString = randWord + jquery
-  for(var i=0, ii=keywords.length; i<ii; ++i) {
-    var keywordRegex = new RegExp(keywords[i], 'g')
-    testString.match(keywordRegex)
-  }
-})
-.add('native regex (streamed)', function () {
-  // Make sure v8 can't cheat
-  var randWord = keywords[Math.floor(Math.random() * (max - min + 1)) + min]
-  testString = randWord + jquery
-  while ((v8regex.exec(testString)) !== null) {}
-})
-.add('native regex (accumulated)', function () {
+.add('native regex (alternation)', function () {
   // Make sure v8 can't cheat
   var randWord = keywords[Math.floor(Math.random() * (max - min + 1)) + min]
   testString = randWord + jquery

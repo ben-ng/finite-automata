@@ -4,7 +4,7 @@ var test = require('tape')
   , Fragment = require('../lib/fragment')
 
 test('lexer', function (t) {
-  t.plan(7)
+  t.plan(11)
 
   // Example taken from:
   // http://binarysculpting.com/2012/02/15/converting-dfa-to-nfa-by-subset-construction-regular-expressions-part-2
@@ -50,7 +50,6 @@ test('lexer', function (t) {
   , silexer = new Function('input', nfa.toString({functionDef: true, strategy: 'switchInt'}))
   , aclexer = new Function('input', nfa.toString({functionDef: true, strategy: 'arrayChar'}))
   , fplexer = new Function('input', nfa.toString({functionDef: true, strategy: 'functionPointer'}))
-  , ffplexer = new Function('input', nfa.toString({functionDef: true, strategy: 'fastFunctionPointer'}))
     // Valid tokens
   , v0 = 'bbc\''
   , v1 = 'abc\''
@@ -61,7 +60,24 @@ test('lexer', function (t) {
   t.deepEqual(silexer(tokens.join('')), [v0, v1, v0, v1, v0, v1, v0], 'check switch int lexer')
   t.deepEqual(aclexer(tokens.join('')), [v0, v1, v0, v1, v0, v1, v0], 'check array char lexer')
   t.deepEqual(fplexer(tokens.join('')), [v0, v1, v0, v1, v0, v1, v0], 'check function pointer lexer')
-  t.deepEqual(ffplexer(tokens.join('')), [v0, v1, v0, v1, v0, v1, v0], 'check optimized function pointer lexer')
+
+  nfa = new Fragment({
+    initial: 0
+  , accept: [0]
+  , transitions: {0: ['a', 1], 1: ['b', 0]}
+  })
+
+  lexer = new Function('input', nfa.toString({functionDef: true, strategy: 'default'}))
+  sclexer = new Function('input', nfa.toString({functionDef: true, strategy: 'switchChar'}))
+  silexer = new Function('input', nfa.toString({functionDef: true, strategy: 'switchInt'}))
+  aclexer = new Function('input', nfa.toString({functionDef: true, strategy: 'arrayChar'}))
+  fplexer = new Function('input', nfa.toString({functionDef: true, strategy: 'functionPointer'}))
+
+  t.deepEqual(lexer('    '), [], 'check default lexer')
+  t.deepEqual(sclexer('    '), [], 'check switch char lexer')
+  t.deepEqual(silexer('    '), [], 'check switch int lexer')
+  t.deepEqual(aclexer('    '), [], 'check array char lexer')
+  t.deepEqual(fplexer('    '), [], 'check function pointer lexer')
 
   // Run without options
   t.doesNotThrow(function () {
