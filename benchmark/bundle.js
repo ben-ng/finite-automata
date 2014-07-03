@@ -38,6 +38,8 @@ catch (e) {
   logger = console.log
 }
 
+logger('Benchmarks running, expect browser to lock up!')
+
 for(i=0, ii=keywords.length; i<ii; ++i) {
   automaton.union(new Fragment(keywords[i]))
 }
@@ -52,6 +54,11 @@ defaultLexer = new Function('input', automaton.toString({functionDef: true, stra
 
 // add tests
 suite
+.add('finite-automata (array[int][char])', function() {
+  var randWord = keywords[Math.floor(Math.random() * (max - min + 1)) + min]
+  testString = randWord + jquery
+  arrayCharLexer(testString)
+})
 .add('finite-automata (switch char)', function() {
   // Make sure v8 can't cheat
   var randWord = keywords[Math.floor(Math.random() * (max - min + 1)) + min]
@@ -62,11 +69,6 @@ suite
   var randWord = keywords[Math.floor(Math.random() * (max - min + 1)) + min]
   testString = randWord + jquery
   intLexer(testString)
-})
-.add('finite-automata (array[int][char])', function() {
-  var randWord = keywords[Math.floor(Math.random() * (max - min + 1)) + min]
-  testString = randWord + jquery
-  arrayCharLexer(testString)
 })
 .add('finite-automata (array[function])', function() {
   var randWord = keywords[Math.floor(Math.random() * (max - min + 1)) + min]
@@ -468,13 +470,15 @@ var hbs = require('handlebars')
 hbs.registerPartial('fallbackPartial'
   , Buffer("ICAgICAgICAgIGlmIChpc01hdGNoZWQpIHsKICAgICAgICAgICAgcmVzdWx0cy5wdXNoKGlucHV0LnNsaWNlKGxhc3RNYXRjaCwgaSkpCiAgICAgICAgICB9CgogICAgICAgICAgY3VycmVudFN0YXRlID0ge3tpbml0aWFsU3RhdGV9fQoKICAgICAgICAgIHt7I2lmIGluaXRpYWxTdGF0ZUlzQWNjZXB0ZWR9fQogICAgICAgICAgaXNNYXRjaGVkID0gdHJ1ZQogICAgICAgICAge3tlbHNlfX0KICAgICAgICAgIGlzTWF0Y2hlZCA9IGZhbHNlCiAgICAgICAgICB7ey9pZn19CgogICAgICAgICAge3sjaWYgaXNJbml0aWFsU3RhdGV9fQogICAgICAgICAgbGFzdE1hdGNoID0gaSArIDEKICAgICAgICAgIHt7ZWxzZX19CiAgICAgICAgICBsYXN0TWF0Y2ggPSBpCiAgICAgICAgICBpID0gaSAtIDEKICAgICAgICAgIHt7L2lmfX0K","base64").toString())
 hbs.registerPartial('manyTransitionsPartial'
-  , Buffer("ICAgICAgICBzd2l0Y2ggKGlucHV0LmNoYXJDb2RlQXQoaSkpIHsKICAgICAgICAgIHt7I2VhY2ggY2hhcmFjdGVyc319CiAgICAgICAgICBjYXNlIHt7Y2hhckNvZGV9fToKICAgICAgICAgICAgY3VycmVudFN0YXRlID0ge3t0YXJnZXRTdGF0ZX19CiAgICAgICAgICAgIHt7I2lmIHRhcmdldElzQWNjZXB0ZWR9fQogICAgICAgICAgICBpc01hdGNoZWQgPSB0cnVlCiAgICAgICAgICAgIHt7ZWxzZX19CiAgICAgICAgICAgIGlzTWF0Y2hlZCA9IGZhbHNlCiAgICAgICAgICAgIHt7L2lmfX0KICAgICAgICAgICAgYnJlYWsKICAgICAgICAgIHt7L2VhY2h9fQoKICAgICAgICAgIGRlZmF1bHQ6Cnt7PmZhbGxiYWNrUGFydGlhbH19CiAgICAgICAgfQo=","base64").toString())
+  , Buffer("ICAgICAge3sjaWYgQGZpcnN0fX0KICAgICAgKGZ1bmN0aW9uICgpIHsKICAgICAge3tlbHNlfX0KICAgICwgKGZ1bmN0aW9uICgpIHsKICAgICAge3svaWZ9fQogICAgICAgIHZhciBpbnB1dHMgPSBbXQoKICAgICAgICB7eyNlYWNoIGNoYXJhY3RlcnN9fQogICAgICAgIGlucHV0c1t7e2NoYXJDb2RlfX1dID0gZnVuY3Rpb24gKCkgewogICAgICAgICAgY3VycmVudFN0YXRlID0ge3t0YXJnZXRTdGF0ZX19CiAgICAgICAgICB7eyNpZiB0YXJnZXRJc0FjY2VwdGVkfX0KICAgICAgICAgIGlzTWF0Y2hlZCA9IHRydWUKICAgICAgICAgIHt7ZWxzZX19CiAgICAgICAgICBpc01hdGNoZWQgPSBmYWxzZQogICAgICAgICAge3svaWZ9fQogICAgICAgIH0KICAgICAgICB7ey9lYWNofX0KCiAgICAgICAgcmV0dXJuIGZ1bmN0aW9uICgpIHsKICAgICAgICAgIHZhciB0ID0gaW5wdXRzW2lucHV0LmNoYXJDb2RlQXQoaSldCgogICAgICAgICAgaWYodCkgewogICAgICAgICAgICB0KCkKICAgICAgICAgIH0KICAgICAgICAgIGVsc2Ugewp7ez5mYWxsYmFja1BhcnRpYWx9fQogICAgICAgICAgfQogICAgICAgIH07CiAgICAgIH0oKSkK","base64").toString())
+hbs.registerPartial('severalTransitionsPartial'
+  , Buffer("ICAgICAge3sjaWYgQGZpcnN0fX0KICAgICAgZnVuY3Rpb24gKCkgewogICAgICB7e2Vsc2V9fQogICAgLCBmdW5jdGlvbiAoKSB7CiAgICAgIHt7L2lmfX0KICAgICAgICAgICAgICBzd2l0Y2ggKGlucHV0LmNoYXJDb2RlQXQoaSkpIHsKICAgICAgICAgIHt7I2VhY2ggY2hhcmFjdGVyc319CiAgICAgICAgICBjYXNlIHt7Y2hhckNvZGV9fToKICAgICAgICAgICAgY3VycmVudFN0YXRlID0ge3t0YXJnZXRTdGF0ZX19CiAgICAgICAgICAgIHt7I2lmIHRhcmdldElzQWNjZXB0ZWR9fQogICAgICAgICAgICBpc01hdGNoZWQgPSB0cnVlCiAgICAgICAgICAgIHt7ZWxzZX19CiAgICAgICAgICAgIGlzTWF0Y2hlZCA9IGZhbHNlCiAgICAgICAgICAgIHt7L2lmfX0KICAgICAgICAgICAgYnJlYWsKICAgICAgICAgIHt7L2VhY2h9fQoKICAgICAgICAgIGRlZmF1bHQ6Cnt7PmZhbGxiYWNrUGFydGlhbH19CiAgICAgICAgfQogICAgICB9","base64").toString())
 hbs.registerPartial('oneTransitionPartial'
-  , Buffer("ICAgICAgICBpZiAoaW5wdXQuY2hhckNvZGVBdChpKSA9PSB7e2NoYXJDb2RlfX0pIHsKICAgICAgICAgIGN1cnJlbnRTdGF0ZSA9IHt7dGFyZ2V0U3RhdGV9fQogICAgICAgICAge3sjaWYgdGFyZ2V0SXNBY2NlcHRlZH19CiAgICAgICAgICBpc01hdGNoZWQgPSB0cnVlCiAgICAgICAgICB7e2Vsc2V9fQogICAgICAgICAgaXNNYXRjaGVkID0gZmFsc2UKICAgICAgICAgIHt7L2lmfX0KICAgICAgICB9CiAgICAgICAgZWxzZSB7Cnt7PmZhbGxiYWNrUGFydGlhbH19CiAgICAgICAgfQo=","base64").toString())
+  , Buffer("ICAgICAge3sjaWYgQGZpcnN0fX0KICAgICAgZnVuY3Rpb24gKCkgewogICAgICB7e2Vsc2V9fQogICAgLCBmdW5jdGlvbiAoKSB7CiAgICAgIHt7L2lmfX0KICAgICAgICAgICAgICBpZiAoaW5wdXQuY2hhckNvZGVBdChpKSA9PSB7e2NoYXJDb2RlfX0pIHsKICAgICAgICAgIGN1cnJlbnRTdGF0ZSA9IHt7dGFyZ2V0U3RhdGV9fQogICAgICAgICAge3sjaWYgdGFyZ2V0SXNBY2NlcHRlZH19CiAgICAgICAgICBpc01hdGNoZWQgPSB0cnVlCiAgICAgICAgICB7e2Vsc2V9fQogICAgICAgICAgaXNNYXRjaGVkID0gZmFsc2UKICAgICAgICAgIHt7L2lmfX0KICAgICAgICB9CiAgICAgICAgZWxzZSB7Cnt7PmZhbGxiYWNrUGFydGlhbH19CiAgICAgICAgfQogICAgICB9Cg==","base64").toString())
 hbs.registerPartial('noTransitionsPartial'
-  , Buffer("e3s+ZmFsbGJhY2tQYXJ0aWFsfX0K","base64").toString())
+  , Buffer("CiAgICAgIHt7I2lmIEBmaXJzdH19CiAgICAgIGZ1bmN0aW9uICgpIHsKICAgICAge3tlbHNlfX0KICAgICwgZnVuY3Rpb24gKCkgewogICAgICB7ey9pZn19CiAgICAgIHt7PmZhbGxiYWNrUGFydGlhbH19CiAgICAgIH0K","base64").toString())
 
-template = hbs.compile(Buffer("e3sjaWYgZnVuY3Rpb25EZWZ9fQpmdW5jdGlvbiBsZXhlcihpbnB1dCkgewp7ey9pZn19Cgp2YXIgY3VycmVudFN0YXRlID0ge3tpbml0aWFsU3RhdGV9fQp7eyNpZiBpbml0aWFsU3RhdGVJc0FjY2VwdGVkfX0KICAsIGlzTWF0Y2hlZCA9IHRydWUKe3tlbHNlfX0KICAsIGlzTWF0Y2hlZCA9IGZhbHNlCnt7L2lmfX0KICAsIGkgPSAwCiAgLCBpaSA9IGlucHV0Lmxlbmd0aAogICwgbGFzdE1hdGNoID0gMAogICwgcmVzdWx0cyA9IFtdCiAgLCB0cmFuc2l0aW9ucyA9IFsKCiAgICB7eyNlYWNoIHRyYW5zaXRpb25zfX0KCiAgICAgIHt7I2lmIEBmaXJzdH19CiAgICAgIGZ1bmN0aW9uICgpIHsKICAgICAge3tlbHNlfX0KICAgICwgZnVuY3Rpb24gKCkgewogICAgICB7ey9pZn19CiAgICAgICAge3sjaWYgbWFueVRyYW5zaXRpb25zfX0Ke3s+bWFueVRyYW5zaXRpb25zUGFydGlhbH19CiAgICAgICAge3svaWZ9fQogICAgICAgIHt7I2lmIG9uZVRyYW5zaXRpb259fQp7ez5vbmVUcmFuc2l0aW9uUGFydGlhbH19CiAgICAgICAge3svaWZ9fQogICAgICAgIHt7I2lmIG5vVHJhbnNpdGlvbnN9fQp7ez5ub1RyYW5zaXRpb25zUGFydGlhbH19CiAgICAgICAge3svaWZ9fQogICAgICB9CgogICAge3svZWFjaH19CgogICAgXQoKICAgIGZvciAoO2k8aWk7KytpKSB7CiAgICAgIHRyYW5zaXRpb25zW2N1cnJlbnRTdGF0ZV0oKQogICAgfQoKICAgIGlmIChpc01hdGNoZWQpIHsKICAgICAgcmVzdWx0cy5wdXNoKGlucHV0LnNsaWNlKGxhc3RNYXRjaCkpCiAgICB9CgogICAgcmV0dXJuIHJlc3VsdHMKCnt7I2lmIGZ1bmN0aW9uRGVmfX0KfQp7ey9pZn19Cg==","base64").toString())
+template = hbs.compile(Buffer("e3sjaWYgZnVuY3Rpb25EZWZ9fQpmdW5jdGlvbiBsZXhlcihpbnB1dCkgewp7ey9pZn19Cgp2YXIgY3VycmVudFN0YXRlID0ge3tpbml0aWFsU3RhdGV9fQp7eyNpZiBpbml0aWFsU3RhdGVJc0FjY2VwdGVkfX0KICAsIGlzTWF0Y2hlZCA9IHRydWUKe3tlbHNlfX0KICAsIGlzTWF0Y2hlZCA9IGZhbHNlCnt7L2lmfX0KICAsIGkgPSAwCiAgLCBpaSA9IGlucHV0Lmxlbmd0aAogICwgbGFzdE1hdGNoID0gMAogICwgcmVzdWx0cyA9IFtdCiAgLCB0cmFuc2l0aW9ucyA9IFsKCiAgICB7eyNlYWNoIHRyYW5zaXRpb25zfX0KICAgICAge3sjaWYgbWFueVRyYW5zaXRpb25zfX0Ke3s+bWFueVRyYW5zaXRpb25zUGFydGlhbH19CiAgICAgIHt7L2lmfX0KICAgICAge3sjaWYgc2V2ZXJhbFRyYW5zaXRpb25zfX0Ke3s+c2V2ZXJhbFRyYW5zaXRpb25zUGFydGlhbH19CiAgICAgIHt7L2lmfX0KICAgICAge3sjaWYgb25lVHJhbnNpdGlvbn19Cnt7Pm9uZVRyYW5zaXRpb25QYXJ0aWFsfX0KICAgICAge3svaWZ9fQogICAgICB7eyNpZiBub1RyYW5zaXRpb25zfX0Ke3s+bm9UcmFuc2l0aW9uc1BhcnRpYWx9fQogICAgICB7ey9pZn19CiAgICB7ey9lYWNofX0KCiAgICBdCgogICAgZm9yICg7aTxpaTsrK2kpIHsKICAgICAgdHJhbnNpdGlvbnNbY3VycmVudFN0YXRlXSgpCiAgICB9CgogICAgaWYgKGlzTWF0Y2hlZCkgewogICAgICByZXN1bHRzLnB1c2goaW5wdXQuc2xpY2UobGFzdE1hdGNoKSkKICAgIH0KCiAgICByZXR1cm4gcmVzdWx0cwoKe3sjaWYgZnVuY3Rpb25EZWZ9fQp9Cnt7L2lmfX0K","base64").toString())
 
 function dfa2lexer (def) {
   var i = 0
@@ -493,12 +497,20 @@ function dfa2lexer (def) {
     }
 
     if(keys.length > 1) {
-      remapped[i].manyTransitions = true
+      // TODO: Figure out what this magic number should really be!
+      if(keys.length > 40) {
+        remapped[i].manyTransitions = true
+      }
+      else {
+        remapped[i].severalTransitions = true
+      }
+
       remapped[i].characters = {}
 
       for(k in def.transitionTable[i]) {
         remapped[i].characters[k] = {
           charCode: k.charCodeAt(0)
+        , chr: k.charAt(0)
         , targetState: def.transitionTable[i][k]
         , targetIsAccepted: def.accept.indexOf(def.transitionTable[i][k]) >= 0
         , initialState: def.initial
@@ -886,7 +898,7 @@ StateMachine.prototype.toString = function toString (opts) {
     return lexers[opts.strategy](def)
   }
 
-  return lexers.fastFunctionPointer(def)
+  return lexers['default'](def)
 }
 
 module.exports = StateMachine

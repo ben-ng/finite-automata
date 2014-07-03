@@ -37,6 +37,8 @@ catch (e) {
   logger = console.log
 }
 
+logger('Benchmarks running, expect browser to lock up!')
+
 for(i=0, ii=keywords.length; i<ii; ++i) {
   automaton.union(new Fragment(keywords[i]))
 }
