@@ -7,7 +7,7 @@
     "test": "node test",
     "b": "node benchmark",
     "bb": "browserify -t brfs benchmark/index.js > benchmark/bundle.js",
-    "profile": "node benchmark/v8/writeLexer && browserify -t brfs benchmark/v8/index.js > benchmark/v8/bundle.js && d8 --trace-opt --trace-deopt --always_opt --prof benchmark/v8/bundle.js && mac-tick-processor v8.log && unlink v8.log && unlink benchmark/v8/bundle.js"
+    "profile": "node benchmark/v8/writeLexer && browserify -t brfs benchmark/v8/index.js > benchmark/v8/bundle.js && d8 --trace-opt --trace-deopt --prof benchmark/v8/bundle.js && mac-tick-processor v8.log && unlink v8.log && unlink benchmark/v8/bundle.js && unlink benchmark/v8/_lexer.js"
   },
   "repository": {
     "type": "git",

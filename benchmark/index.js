@@ -51,6 +51,11 @@ defaultLexer = new Function('input', automaton.toString({functionDef: true, stra
 
 // add tests
 suite
+.add('finite-automata (array[int][char])', function() {
+  var randWord = keywords[Math.floor(Math.random() * (max - min + 1)) + min]
+  testString = randWord + jquery
+  arrayCharLexer(testString)
+})
 .add('finite-automata (switch char)', function() {
   // Make sure v8 can't cheat
   var randWord = keywords[Math.floor(Math.random() * (max - min + 1)) + min]
@@ -61,11 +66,6 @@ suite
   var randWord = keywords[Math.floor(Math.random() * (max - min + 1)) + min]
   testString = randWord + jquery
   intLexer(testString)
-})
-.add('finite-automata (array[int][char])', function() {
-  var randWord = keywords[Math.floor(Math.random() * (max - min + 1)) + min]
-  testString = randWord + jquery
-  arrayCharLexer(testString)
 })
 .add('finite-automata (array[function])', function() {
   var randWord = keywords[Math.floor(Math.random() * (max - min + 1)) + min]
