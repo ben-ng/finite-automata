@@ -44,9 +44,9 @@ for(i=0, ii=keywords.length; i<ii; ++i) {
 
 v8regex = new RegExp('(' + keywords.join('|') + ')', 'g')
 
-charLexer = new Function('input', automaton.toString({functionDef: true}))
-intLexer = new Function('input', automaton.toString({functionDef: true, strategy: 'switchInt'}))
 arrayCharLexer = new Function('input', automaton.toString({functionDef: true, strategy: 'arrayChar'}))
+charLexer = new Function('input', automaton.toString({functionDef: true, strategy: 'switchChar'}))
+intLexer = new Function('input', automaton.toString({functionDef: true, strategy: 'switchInt'}))
 functionPointerLexer = new Function('input', automaton.toString({functionDef: true, strategy: 'functionPointer'}))
 fastFunctionPointerLexer = new Function('input', automaton.toString({functionDef: true, strategy: 'fastFunctionPointer'}))
 defaultLexer = new Function('input', automaton.toString({functionDef: true, strategy: 'default'}))

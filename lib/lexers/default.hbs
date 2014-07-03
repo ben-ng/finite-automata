@@ -21,40 +21,15 @@ var currentState = {{initialState}}
       {{else}}
     , function () {
       {{/if}}
-
-        switch (input.charCodeAt(i)) {
-
-          {{#each characters}}
-          case {{charCode}}:
-            currentState = {{targetState}}
-            {{#if targetIsAccepted}}
-            isMatched = true
-            {{else}}
-            isMatched = false
-            {{/if}}
-            break
-          {{/each}}
-
-          default:
-          if (isMatched) {
-            results.push(input.slice(lastMatch, i))
-          }
-
-          currentState = {{../initialState}}
-
-          {{#if ../initialStateIsAccepted}}
-          isMatched = true
-          {{else}}
-          isMatched = false
-          {{/if}}
-
-          {{#if isInitialState}}
-          lastMatch = i + 1
-          {{else}}
-          lastMatch = i
-          i = i - 1
-          {{/if}}
-        }
+        {{#if manyTransitions}}
+{{>manyTransitionsPartial}}
+        {{/if}}
+        {{#if oneTransition}}
+{{>oneTransitionPartial}}
+        {{/if}}
+        {{#if noTransitions}}
+{{>noTransitionsPartial}}
+        {{/if}}
       }
 
     {{/each}}

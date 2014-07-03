@@ -1,0 +1,11 @@
+        if (input.charCodeAt(i) == {{charCode}}) {
+          currentState = {{targetState}}
+          {{#if targetIsAccepted}}
+          isMatched = true
+          {{else}}
+          isMatched = false
+          {{/if}}
+        }
+        else {
+{{>fallbackPartial}}
+        }

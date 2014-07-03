@@ -56,12 +56,12 @@ test('lexer', function (t) {
   , v1 = 'abc\''
   , tokens = ['  ', v0, '2 \'3', v1, '\'sf', v0, 'a\'sf', v1, v0, v1, 'turkey', v0]
 
-  t.deepEqual(lexer(tokens.join('')), [v0, v1, v0, v1, v0, v1, v0])
-  t.deepEqual(sclexer(tokens.join('')), [v0, v1, v0, v1, v0, v1, v0])
-  t.deepEqual(silexer(tokens.join('')), [v0, v1, v0, v1, v0, v1, v0])
-  t.deepEqual(aclexer(tokens.join('')), [v0, v1, v0, v1, v0, v1, v0])
-  t.deepEqual(fplexer(tokens.join('')), [v0, v1, v0, v1, v0, v1, v0])
-  t.deepEqual(ffplexer(tokens.join('')), [v0, v1, v0, v1, v0, v1, v0])
+  t.deepEqual(lexer(tokens.join('')), [v0, v1, v0, v1, v0, v1, v0], 'check default lexer')
+  t.deepEqual(sclexer(tokens.join('')), [v0, v1, v0, v1, v0, v1, v0], 'check switch char lexer')
+  t.deepEqual(silexer(tokens.join('')), [v0, v1, v0, v1, v0, v1, v0], 'check switch int lexer')
+  t.deepEqual(aclexer(tokens.join('')), [v0, v1, v0, v1, v0, v1, v0], 'check array char lexer')
+  t.deepEqual(fplexer(tokens.join('')), [v0, v1, v0, v1, v0, v1, v0], 'check function pointer lexer')
+  t.deepEqual(ffplexer(tokens.join('')), [v0, v1, v0, v1, v0, v1, v0], 'check optimized function pointer lexer')
 
   // Run without options
   t.doesNotThrow(function () {
