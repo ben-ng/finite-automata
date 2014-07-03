@@ -4,7 +4,7 @@ var test = require('tape')
   , Fragment = require('../lib/fragment')
 
 test('lexer', function (t) {
-  t.plan(4)
+  t.plan(6)
 
   // Example taken from:
   // http://binarysculpting.com/2012/02/15/converting-dfa-to-nfa-by-subset-construction-regular-expressions-part-2
@@ -48,6 +48,8 @@ test('lexer', function (t) {
   , sclexer = new Function('input', nfa.toString({functionDef: true, strategy: 'switchChar'}))
   , silexer = new Function('input', nfa.toString({functionDef: true, strategy: 'switchInt'}))
   , aclexer = new Function('input', nfa.toString({functionDef: true, strategy: 'arrayChar'}))
+  , fplexer = new Function('input', nfa.toString({functionDef: true, strategy: 'functionPointer'}))
+  , ffplexer = new Function('input', nfa.toString({functionDef: true, strategy: 'fastFunctionPointer'}))
     // Valid tokens
   , v0 = 'bbc\''
   , v1 = 'abc\''
@@ -56,6 +58,8 @@ test('lexer', function (t) {
   t.deepEqual(sclexer(tokens.join('')), [v0, v1, v0, v1, v0, v1, v0])
   t.deepEqual(silexer(tokens.join('')), [v0, v1, v0, v1, v0, v1, v0])
   t.deepEqual(aclexer(tokens.join('')), [v0, v1, v0, v1, v0, v1, v0])
+  t.deepEqual(fplexer(tokens.join('')), [v0, v1, v0, v1, v0, v1, v0])
+  t.deepEqual(ffplexer(tokens.join('')), [v0, v1, v0, v1, v0, v1, v0])
 
   // Run without options
   t.doesNotThrow(function () {

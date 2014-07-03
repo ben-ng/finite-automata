@@ -4,10 +4,10 @@
   "description": "Unfancy state machine",
   "main": "lib/fragment",
   "scripts": {
-    "test": "node test"
-  , "b": "node benchmark"
-  , "bb": "browserify -t brfs benchmark/index.js > benchmark/bundle.js"
-  , "profile": "node benchmark/v8/writeLexer && browserify -t brfs benchmark/v8/index.js > benchmark/v8/bundle.js && d8 --trace-opt --trace-deopt --prof benchmark/v8/bundle.js && mac-tick-processor v8.log && unlink v8.log && unlink benchmark/v8/bundle.js"
+    "test": "node test",
+    "b": "node benchmark",
+    "bb": "browserify -t brfs benchmark/index.js > benchmark/bundle.js",
+    "profile": "node benchmark/v8/writeLexer && browserify -t brfs benchmark/v8/index.js > benchmark/v8/bundle.js && d8 --trace-opt --trace-deopt --always_opt --prof benchmark/v8/bundle.js && mac-tick-processor v8.log && unlink v8.log && unlink benchmark/v8/bundle.js"
   },
   "repository": {
     "type": "git",
@@ -30,7 +30,8 @@
     "benchmark": "1.x.x",
     "jison-lex": "0.3.x",
     "brfs": "1.0.2",
-    "browserify": "4.x.x"
+    "browserify": "4.x.x",
+    "microtime": "0.6.x"
   },
   "testling": {
     "files": "test/index.js",
