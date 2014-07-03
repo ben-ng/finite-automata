@@ -1,0 +1,76 @@
+{{#if functionDef}}
+function lexer(input) {
+{{/if}}
+
+var currentState = {{initialState}}
+{{#if initialStateIsAccepted}}
+  , isMatched = true
+{{else}}
+  , isMatched = false
+{{/if}}
+  , i = 0
+  , ii = input.length
+  , lastMatch = 0
+  , results = []
+  , transitions = [
+
+    {{#each transitions}}
+
+      {{#if @first}}
+      function () {
+      {{else}}
+    , function () {
+      {{/if}}
+
+        switch (input.charCodeAt(i)) {
+
+          {{#each characters}}
+          case {{charCode}}:
+            currentState = {{targetState}}
+            {{#if targetIsAccepted}}
+            isMatched = true
+            {{else}}
+            isMatched = false
+            {{/if}}
+            break
+          {{/each}}
+
+          default:
+          if (isMatched) {
+            results.push(input.slice(lastMatch, i))
+          }
+
+          currentState = {{../initialState}}
+
+          {{#if ../initialStateIsAccepted}}
+          isMatched = true
+          {{else}}
+          isMatched = false
+          {{/if}}
+
+          {{#if isInitialState}}
+          lastMatch = i + 1
+          {{else}}
+          lastMatch = i
+          i = i - 1
+          {{/if}}
+        }
+      }
+
+    {{/each}}
+
+    ]
+
+    for (;i<ii;++i) {
+      transitions[currentState]()
+    }
+
+    if (isMatched) {
+      results.push(input.slice(lastMatch))
+    }
+
+    return results
+
+{{#if functionDef}}
+}
+{{/if}}

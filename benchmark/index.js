@@ -17,6 +17,7 @@ var Benchmark = require('benchmark')
   , arrayCharLexer
   , functionPointerLexer
   , fastFunctionPointerLexer
+  , defaultLexer
   , logger
   , max = keywords.length - 1
   , min = 0
@@ -48,6 +49,7 @@ intLexer = new Function('input', automaton.toString({functionDef: true, strategy
 arrayCharLexer = new Function('input', automaton.toString({functionDef: true, strategy: 'arrayChar'}))
 functionPointerLexer = new Function('input', automaton.toString({functionDef: true, strategy: 'functionPointer'}))
 fastFunctionPointerLexer = new Function('input', automaton.toString({functionDef: true, strategy: 'fastFunctionPointer'}))
+defaultLexer = new Function('input', automaton.toString({functionDef: true, strategy: 'default'}))
 
 // add tests
 suite
@@ -76,6 +78,11 @@ suite
   var randWord = keywords[Math.floor(Math.random() * (max - min + 1)) + min]
   testString = randWord + jquery
   fastFunctionPointerLexer(testString)
+})
+.add('finite-automata (default)', function() {
+  var randWord = keywords[Math.floor(Math.random() * (max - min + 1)) + min]
+  testString = randWord + jquery
+  defaultLexer(testString)
 })
 .add('native regex (repeated)', function () {
   // Make sure v8 can't cheat

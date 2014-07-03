@@ -23,14 +23,16 @@
     "url": "https://github.com/ben-ng/finite-automata/issues"
   },
   "homepage": "https://github.com/ben-ng/finite-automata",
-  "dependencies": {},
+  "dependencies": {
+  },
   "devDependencies": {
     "tape": "2.x.x",
     "benchmark": "1.x.x",
     "jison-lex": "0.3.x",
     "brfs": "1.0.2",
     "browserify": "4.x.x",
-    "microtime": "0.6.x"
+    "microtime": "0.6.x",
+    "handlebars": "2.x.x"
   },
   "testling": {
     "files": "test/index.js",
