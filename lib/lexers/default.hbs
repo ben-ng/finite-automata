@@ -15,23 +15,18 @@ var currentState = {{initialState}}
   , transitions = [
 
     {{#each transitions}}
-
-      {{#if @first}}
-      function () {
-      {{else}}
-    , function () {
-      {{/if}}
-        {{#if manyTransitions}}
+      {{#if manyTransitions}}
 {{>manyTransitionsPartial}}
-        {{/if}}
-        {{#if oneTransition}}
+      {{/if}}
+      {{#if severalTransitions}}
+{{>severalTransitionsPartial}}
+      {{/if}}
+      {{#if oneTransition}}
 {{>oneTransitionPartial}}
-        {{/if}}
-        {{#if noTransitions}}
+      {{/if}}
+      {{#if noTransitions}}
 {{>noTransitionsPartial}}
-        {{/if}}
-      }
-
+      {{/if}}
     {{/each}}
 
     ]

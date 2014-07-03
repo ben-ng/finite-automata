@@ -1,15 +1,29 @@
-        switch (input.charCodeAt(i)) {
-          {{#each characters}}
-          case {{charCode}}:
-            currentState = {{targetState}}
-            {{#if targetIsAccepted}}
-            isMatched = true
-            {{else}}
-            isMatched = false
-            {{/if}}
-            break
-          {{/each}}
+      {{#if @first}}
+      (function () {
+      {{else}}
+    , (function () {
+      {{/if}}
+        var inputs = []
 
-          default:
-{{>fallbackPartial}}
+        {{#each characters}}
+        inputs[{{charCode}}] = function () {
+          currentState = {{targetState}}
+          {{#if targetIsAccepted}}
+          isMatched = true
+          {{else}}
+          isMatched = false
+          {{/if}}
         }
+        {{/each}}
+
+        return function () {
+          var t = inputs[input.charCodeAt(i)]
+
+          if(t) {
+            t()
+          }
+          else {
+{{>fallbackPartial}}
+          }
+        };
+      }())

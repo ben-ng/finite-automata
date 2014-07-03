@@ -1,0 +1,21 @@
+      {{#if @first}}
+      function () {
+      {{else}}
+    , function () {
+      {{/if}}
+              switch (input.charCodeAt(i)) {
+          {{#each characters}}
+          case {{charCode}}:
+            currentState = {{targetState}}
+            {{#if targetIsAccepted}}
+            isMatched = true
+            {{else}}
+            isMatched = false
+            {{/if}}
+            break
+          {{/each}}
+
+          default:
+{{>fallbackPartial}}
+        }
+      }
