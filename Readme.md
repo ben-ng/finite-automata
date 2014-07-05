@@ -1,12 +1,11 @@
 # Finite Automata
 
-Unfancy Javascript state machines. For people who like simple, reliable tools.
+An unfancy JavaScript state machine for your more ambitious project.
 
 [![Build Status](https://travis-ci.org/ben-ng/finite-automata.svg?branch=master)](https://travis-ci.org/ben-ng/finite-automata)
 
 [![browser support](https://ci.testling.com/ben-ng/finite-automata.png)
 ](https://ci.testling.com/ben-ng/finite-automata)
-
 
 ## Features
 
@@ -14,11 +13,9 @@ Unfancy Javascript state machines. For people who like simple, reliable tools.
  * Union `/a|b/`
  * Repetition `/a*/` (Kleene Closure)
  * Simulation on input `/ab/.test('haystack')`
- * Lexer generation
  * NFA to DFA conversion (via Powerset Construction)
  * DFA minimization (via Brzozowski's algorithm)
  * 100% branch and statement coverage
- * Pretty fast for JavaScript! (Benchmarks below)
 
 ## Usage
 
@@ -41,11 +38,6 @@ fragment1.union(fragment2).repeat().concat(fragment3)
 
 t.ok(fragment1.test('ababbc'), 'Should accept ababbc')
 t.ok(!fragment1.test('ababba'), 'Should not accept ababba')
-
-// Compile a lexer from the fragment
-var lexer = new Function('input', fragment1.toString({functionDef: true}))
-
-t.deepEqual(lexer('ababacbacc'), ['ababac', 'bac', 'c'], 'Should get all valid tokens')
 
 ```
 
@@ -155,50 +147,3 @@ Returns true if the fragment accepts the input string.
 Notes:
 
 This uses a state machine to simulate the fragment on the input. NFAs will be copied and converted into minimal DFAs. This is a slow method -- if you need to run the fragment multiple times, compile a lexer with `.toString()`.
-
-#### Fragment.toString()
-
-```javascript
-
-// Write it to a file as a module
-fs.writeFile('lexer.js', a.toString() + '; module.exports = lexer', cb)
-
-// Or use the functionDef option to only get statements
-lexer = new Function('input', a.toString({functionDef: true}))
-lexer('haystack') // -> produces an array of tokens
-
-// No RegExp equivalent
-
-```
-
-Returns a high performance lexer for the fragment based on a minimal DFA.
-
-## Speed
-
-A fair amount of effort has been put into making this module as fast as possible. This includes finding the minimal DFA for the input, carefully choosing when to use a `switch` or `array` or `if/else`, and minimizing branch misprediction. The latter has had the biggest impact on performance, resulting in a 2x speedup over a naive implementation. Check out the lexer templates, and try making it even faster!
-
-This module comes with profiling and benchmarking tools. Here are some sample runs on my 2012 rmbp:
-
-#### Chrome 35
-```txt
-finite-automata (default) x 122 ops/sec ±1.13% (60 runs sampled)
-native regex (alternation) x 390 ops/sec ±0.78% (54 runs sampled)
-```
-Chrome 35 is 3.19 times faster than this module
-
-#### Firefox 30
-```txt
-finite-automata (default) x 91.00 ops/sec ±1.79% (54 runs sampled)
-native regex (alternation) x 60.66 ops/sec ±0.56% (54 runs sampled)
-```
-This module is 1.5 times faster than Firefox 30
-
-
-#### Internet Explorer 11
-```txt
-finite-automata (default) x 99.62 ops/sec ±1.16% (58 runs sampled)
-native regex (alternation) x 136 ops/sec ±1.17% (61 runs sampled)
-```
-Internet Explorer 11 is 1.37 times faster than this module
-
-A fiddle for this run can be found [here](http://jsfiddle.net/ztRsq). (Warning: will lock up your browser for ~20 seconds)
