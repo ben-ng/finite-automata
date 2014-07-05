@@ -14,7 +14,7 @@ An unfancy JavaScript state machine for your more ambitious project.
  * Repetition `/a*/` (Kleene Closure)
  * Simulation on input `/ab/.test('haystack')`
  * NFA to DFA conversion (via Powerset Construction)
- * DFA minimization (via Brzozowski's algorithm)
+ * DFA minimization (via Partitioning)
  * 100% branch and statement coverage
 
 ## Usage

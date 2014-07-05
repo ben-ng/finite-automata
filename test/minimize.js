@@ -1,50 +1,44 @@
 var test = require('tape')
   , Fragment = require('../lib/fragment')
-  , minimize = require('../lib/minimize')
 
 test('minimize', function (t) {
-  t.plan(3)
-
-  // Example taken from:
-  // http://binarysculpting.com/2012/02/15/converting-dfa-to-nfa-by-subset-construction-regular-expressions-part-2
+  t.plan(11)
 
   var nfa = new Fragment({
-              initial: 'A'
-            , accept: ['E']
+              initial: 0
+            , accept: [0, 'pancake']
             , transitions: {
-                'A': [
-                      '0', 'B'
-                    , '1', 'C'
-                    ]
-              , 'B': [
-                      // The rI forces a collision
-                      // Think of it as "D"
-                      '0', 'rI'
-                    , '1', 'rI'
-                    ]
-              , 'C': [
-                      '0', 'rI'
-                    , '1', 'rI'
-                    ]
-              , 'rI': [
-                      '0', 'E'
-                    , '1', 'E'
-                    ]
-              , 'E': []
+                0: ['a', 1]
+              , 1: ['a', 4, 'b', 2]
+              , 2: ['a', 3, 'b', 5]
+              , 3: ['b', 1]
+              , 4: ['a', 'pancake', 'b', 5]
+              , 5: ['a', 7, 'b', 2]
+              , pancake: ['a', 5]
+              , 7: ['a', 0, 'b', 5]
               }
             })
-  , dfa = minimize(nfa, ',')
+    , dfa = new Fragment(nfa.minimize())
 
-  t.equal(dfa.initial, 'A,rI`', 'New initial state should be the reversed initial A')
-  t.deepEqual(dfa.accept, ['E,rI`'], 'New accept state should be the reversed initial E')
-  // Output: https://i.cloudup.com/3wBxFiLzPp-3000x3000.png
-  // Almost, anyway. '0,1,2,3,5,6,7' - a -> '0,1,3,4,5,6'
-  // is not in the image. Not sure if bug, or equivalent DFAs.
+  t.ok(nfa.test('abbbabaa'), 'nfa should accept abbbabaa')
+  t.ok(nfa.test('aaa'), 'nfa should accept aaa')
+  t.ok(nfa.test(''), 'nfa should accept empty string')
+  t.ok(!nfa.test('a'), 'nfa should accept a')
+
+  t.ok(dfa.test('abbbabaa'), 'minimal dfa should accept abbbabaa')
+  t.ok(dfa.test('aaa'), 'minimal dfa should accept aaa')
+  t.ok(dfa.test(''), 'minimal dfa should accept empty string')
+  t.ok(!dfa.test('a'), 'minimal dfa should accept a')
+
+  t.equal(dfa.initial, 'pancake', 'Should have preserved initial state')
+  t.deepEqual(dfa.accept, ['pancake'], 'Should have preserved accept state')
   t.deepEqual(dfa.transitions
     , {
-      'A,rI`': [ '0', 'B,C', '1', 'B,C' ],
-      'B,C': [ '0', 'rI', '1', 'rI' ],
-      'rI': [ '0', 'E,rI`', '1', 'E,rI`' ],
-      'E,rI`': []
-    }, 'The transition table should have four states')
+      '1': [ 'b', 3 ],
+      '2': [ 'a', 'pancake', 'b', 3 ],
+      '3': [ 'a', 2, 'b', 4 ],
+      '4': [ 'a', 1, 'b', 3 ],
+      pancake: [ 'a', 3 ]
+    }, 'Transitions should be remapped with accept state preserved')
+  t.end()
 })
