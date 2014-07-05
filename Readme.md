@@ -73,7 +73,7 @@ Epsilon transitions should be denoted with the null character `'\0'`
                                   e.g. `key: ['c', 'q0', 'd', 'q1', '\0', 'q2']`
 
 
-#### Fragment(string)
+#### Fragment(string, tokenName)
 
 ```javascript
 // Matches "1010" in a shorthand way
@@ -82,7 +82,7 @@ var binary = new Fragment('1010')
 binary.test('1010') // => true
 ```
 
-If you supply a string to the constructor, it will be turned into a DFA that only recognizes that string.
+If you supply a string to the constructor, it will be turned into a DFA that only recognizes that string. `tokenName` is an optional argument that will be used to name the accepting state, which is useful for lexing.
 
 Notes:
 
