@@ -242,3 +242,19 @@ test('(a|b)*c*(d|e)', function (t) {
   t.ok(a.test('aacce'), 'DFA should accept aacce')
 })
 
+test('cow(dog)*(cat)*', function (t) {
+  t.plan(5)
+
+  var nfa = new Fragment('cow', 'cow')
+    , dog = new Fragment('dog', 'cowdog')
+    , cat = new Fragment('cat', 'cowdogcat')
+
+  // Match cow followed by any number of dogs then any number of cats
+  nfa.concat(dog.repeat()).concat(cat.repeat())
+
+  t.ok(nfa.test('cow'))
+  t.ok(nfa.test('cowdog'))
+  t.ok(nfa.test('cowdogcat'))
+  t.ok(nfa.test('cowcat'))
+  t.ok(nfa.test('cowdogcatcat'))
+})
