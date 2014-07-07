@@ -24,7 +24,6 @@
   },
   "homepage": "https://github.com/ben-ng/finite-automata",
   "dependencies": {
-    "handlebars": "2.x.x"
   },
   "devDependencies": {
     "tape": "2.x.x"
