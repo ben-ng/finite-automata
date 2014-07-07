@@ -3,7 +3,7 @@ var test = require('tape')
 
 test('errors', function (t) {
 
-  t.plan(8)
+  t.plan(9)
 
   t.throws(function () {
     new Fragment()
@@ -37,5 +37,8 @@ test('errors', function (t) {
     var a = new Fragment({initial: 'a', accept: ['q'], transitions: {q: []}})
     a._renameState('b', 'k')
   }, 'The state b does not exist')
+
+  var a = new Fragment({initial: 'a', accept: ['q'], transitions: {q: []}})
+  t.equal(a.toDfa('q').toString(), 'Error: Delimiter "q" collision in state "q"')
 
 })

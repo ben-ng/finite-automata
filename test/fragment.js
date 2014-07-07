@@ -103,6 +103,15 @@ test('concat', function (t) {
   t.ok(!fragment1.test('abc'), 'Concat should not accept overflown dfa')
 })
 
+test('concat state labels', function (t) {
+  t.plan(1)
+
+  var fragment = new Fragment('a', 'a').concat(new Fragment('b', 'b'))
+                                       .concat(new Fragment('c', 'c'))
+
+  t.deepEqual(fragment.toDfa().accept, ['c'], 'Accept state should keep label')
+})
+
 test('union', function (t) {
   t.plan(4)
 
@@ -134,6 +143,15 @@ test('union', function (t) {
   t.ok(fragment1.test('a'), 'Union should accept solely first dfa')
   t.ok(fragment1.test('b'), 'Union should accept solely second dfa')
   t.ok(!fragment1.test('ab'), 'Union should not accept concatenated dfa')
+})
+
+test('union state labels', function (t) {
+  t.plan(1)
+
+  var fragment = new Fragment('a', 'a').union(new Fragment('b', 'b'))
+                                       .union(new Fragment('c', 'c'))
+
+  t.deepEqual(fragment.toDfa().accept, ['a', 'b', 'c'], 'Accept states should keep labels')
 })
 
 test('kleene closure', function (t) {
@@ -169,6 +187,14 @@ test('kleene closure', function (t) {
   t.ok(fragment1.test('ab'), 'Concat+Repeat should accept concatenated dfa')
   t.ok(fragment1.test('aab'), 'Concat+Repeat should accept concatenated dfa with repeat')
   t.ok(fragment1.test('aaab'), 'Concat+Repeat should accept concatenated dfa with repeat')
+})
+
+test('kleene closure labels', function (t) {
+  t.plan(1)
+
+  var fragment = new Fragment('a', 'a').repeat()
+
+  t.deepEqual(fragment.toDfa().accept, ['a'], 'Accept state should keep label')
 })
 
 test('(a|b)*c*(d|e)', function (t) {

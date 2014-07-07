@@ -148,23 +148,39 @@ Notes:
 
 This uses a state machine to simulate the fragment on the input. NFAs will be copied and converted into minimal DFAs. This is a slow method -- if you need to run the fragment multiple times, you might want to create a lexer with [grass](https://www.npmjs.org/package/grass).
 
-#### Fragment.toDfa()
+#### Fragment.toDfa([delimiter])
 
 ```javascript
 
 // a is a fragment
-a.minimize()
+a.minimize(',')
 
 ```
 
 Returns a DFA equivalent to the fragment. Uses powerset construction, which will likely create compound states. If you want a minimal DFA, use `Fragment.minimize()`.
 
-#### Fragment.minimize()
+Notes:
+
+The process of creating a DFA from an NFA results in compound states. These compound states will be named by joining the sorted names of the sub states using an optional delimiter. If exactly one of the sub states is an accepted state, the macrostate will be named after that accepting state. This makes it possible to create larger fragments from smaller, labeled fragments.
+
+Example:
+```javascript
+
+// Take the union of the three labeled fragments
+var fragment = new Fragment('a', 'a').union(new Fragment('b', 'b'))
+                                     .union(new Fragment('c', 'c'))
+
+// The accept states retain their labels
+assert.deepEqual(fragment.toDfa().accept, ['a', 'b', 'c'])
+
+```
+
+#### Fragment.minimize([delimiter])
 
 ```javascript
 
 // a is a fragment
-a.minimize()
+a.minimize(',')
 
 ```
 
