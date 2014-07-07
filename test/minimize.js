@@ -18,7 +18,7 @@ test('minimize', function (t) {
               , 7: ['a', 0, 'b', 5]
               }
             })
-    , dfa = new Fragment(nfa.minimize())
+    , dfa = new Fragment(nfa.minimize(','))
 
   t.ok(nfa.test('abbbabaa'), 'nfa should accept abbbabaa')
   t.ok(nfa.test('aaa'), 'nfa should accept aaa')

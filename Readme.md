@@ -146,4 +146,26 @@ Returns true if the fragment accepts the input string.
 
 Notes:
 
-This uses a state machine to simulate the fragment on the input. NFAs will be copied and converted into minimal DFAs. This is a slow method -- if you need to run the fragment multiple times, compile a lexer with `.toString()`.
+This uses a state machine to simulate the fragment on the input. NFAs will be copied and converted into minimal DFAs. This is a slow method -- if you need to run the fragment multiple times, you might want to create a lexer with [grass](https://www.npmjs.org/package/grass).
+
+#### Fragment.toDfa()
+
+```javascript
+
+// a is a fragment
+a.minimize()
+
+```
+
+Returns a DFA equivalent to the fragment. Uses powerset construction, which will likely create compound states. If you want a minimal DFA, use `Fragment.minimize()`.
+
+#### Fragment.minimize()
+
+```javascript
+
+// a is a fragment
+a.minimize()
+
+```
+
+Returns a minimal DFA equivalent to the fragment.
