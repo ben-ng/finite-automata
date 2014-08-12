@@ -43,7 +43,7 @@ t.ok(!fragment1.test('ababba'), 'Should not accept ababba')
 
 ## Fragment
 
-There are two ways to construct a fragment.
+There are three ways to construct a fragment.
 
 #### Fragment({initial, accept, transitions})
 
@@ -83,6 +83,21 @@ binary.test('1010') // => true
 ```
 
 If you supply a string to the constructor, it will be turned into a DFA that only recognizes that string. `tokenName` is an optional argument that will be used to name the accepting state, which is useful for lexing.
+
+Notes:
+
+You can perform operations on two fragments even if their states collide. Collisions will be resolved by appending the '\`' character.
+
+#### Fragment(-1)
+
+```javascript
+// Matches the end of file in a shorthand way
+var EOF = new Fragment(-1)
+
+EOF.test(-1) // => true
+```
+
+If you supply exactly `-1` to the constructor, it will be turned into a DFA that only recognizes the end of a file. `-1` is used because it is never a valid character code. The EOF fragment is probably only useful when building a parser, where you would want to know if the input stream has ended.
 
 Notes:
 
