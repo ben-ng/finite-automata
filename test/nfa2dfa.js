@@ -3,7 +3,7 @@ var test = require('tape')
   , nfa2dfa = require('../lib/nfa2dfa')
 
 test('reg2nfa', function (t) {
-  t.plan(3)
+  t.plan(4)
 
   // Example taken from:
   // http://binarysculpting.com/2012/02/15/converting-dfa-to-nfa-by-subset-construction-regular-expressions-part-2
@@ -59,4 +59,59 @@ test('reg2nfa', function (t) {
         '0,1,2,3,5,6,7': [ 'b', '0,1,2,3,5,6,7', 'a', '0,1,3,4,5,6', 'c', '8' ],
         '0,1,2,3,5,6': [ 'b', '0,1,2,3,5,6,7', 'a', '0,1,3,4,5,6' ]
     }, 'The transition table should have no epsilon transitions')
+
+  nfa = new Fragment({
+            initial: '0',
+            accept: [ 'T\'\'->T\' $', 'T\'->T', 'T->R', 'T->a T c', 'R->', 'R->b R' ],
+            transitions:
+             { '0': [ 'T\'', '1', '\u0000', '2' ],
+               '1': [ -1, 'T\'\'->T\' $' ],
+               '2': [ 'T', 'T\'->T', '\u0000', '3', '\u0000', '4' ],
+               '3': [ 'R', 'T->R', '\u0000', 'R->', '\u0000', '7' ],
+               '4': [ 'a', '5' ],
+               '5': [ 'T', '6', '\u0000', '3', '\u0000', '4' ],
+               '6': [ 'c', 'T->a T c' ],
+               '7': [ 'b', '8' ],
+               '8': [ 'R', 'R->b R', '\u0000', 'R->', '\u0000', '7' ],
+               'T\'\'->T\' $': [],
+               'T\'->T': [],
+               'T->R': [],
+               'T->a T c': [],
+               'R->': [],
+               'R->b R': [] } })
+
+  t.deepEqual(nfa2dfa(nfa, ',')
+    , {
+        initial: '0,2,3,4,7,R->',
+        accept:
+         [ 'T\'->T',
+           'T->R',
+           '3,4,5,7,R->',
+           '7,8,R->',
+           'R->b R',
+           'T->a T c',
+           'T\'\'->T\' $' ],
+        transitions:
+         { '1': [ -1, 'T\'\'->T\' $' ],
+           '6': [ 'c', 'T->a T c' ],
+           '0,2,3,4,7,R->':
+            [ 'T\'',
+              '1',
+              'T',
+              'T\'->T',
+              'R',
+              'T->R',
+              'a',
+              '3,4,5,7,R->',
+              'b',
+              '7,8,R->' ],
+           '7,8,R->': [ 'b', '7,8,R->', 'R', 'R->b R' ],
+           'R->b R': [],
+           '3,4,5,7,R->': [ 'R', 'T->R', 'a', '3,4,5,7,R->', 'T', '6', 'b', '7,8,R->' ],
+           'T->a T c': [],
+           'T->R': [],
+           'T\'->T': [],
+           'T\'\'->T\' $': [] } }
+    , 'Macrostates should not collide even if they share an accept state')
+
 })
