@@ -1,6 +1,6 @@
 {
   "name": "finite-automata",
-  "version": "3.4.0",
+  "version": "3.4.1",
   "description": "Unfancy state machine",
   "main": "lib/fragment",
   "scripts": {
