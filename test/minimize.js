@@ -2,7 +2,7 @@ var test = require('tape')
   , Fragment = require('../lib/fragment')
 
 test('minimize', function (t) {
-  t.plan(14)
+  t.plan(15)
 
   var nfa = new Fragment({
               initial: 0
@@ -58,4 +58,6 @@ test('minimize', function (t) {
   t.ok(dfa.test('a'), 'minimal dfa should accept a')
   t.ok(!dfa.test('b'), 'minimal dfa should not accept b')
   t.ok(!dfa.test('aa'), 'minimal dfa should not accept aa')
+  t.deepEqual(minimalDfa.aliasMap, { '1': [ 'A', 'B' ], C: [ 'C' ] }
+    , 'aliasMap should survive the nfa -> dfa -> minimization process')
 })
