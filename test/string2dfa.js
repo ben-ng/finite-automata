@@ -1,7 +1,7 @@
 var test = require('tape')
   , Fragment = require('../lib/fragment')
 
-test('reg2nfa', function (t) {
+test('string2nfa', function (t) {
   t.plan(6)
 
   // Example taken from:

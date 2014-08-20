@@ -2,7 +2,7 @@ var test = require('tape')
   , Fragment = require('../lib/fragment')
   , nfa2dfa = require('../lib/nfa2dfa')
 
-test('reg2nfa', function (t) {
+test('nfa2dfa', function (t) {
   t.plan(4)
 
   // Example taken from:
@@ -111,7 +111,20 @@ test('reg2nfa', function (t) {
            'T->a T c': [],
            'T->R': [],
            'T\'->T': [],
-           'T\'\'->T\' $': [] } }
+           'T\'\'->T\' $': [] },
+        aliasMap: {
+          '0,2,3,4,7,R->': [ '0', '2', '3', '4', '7', 'R->' ]
+        , 1: [ '1' ]
+        , '3,4,5,7,R->': [ '3', '4', '5', '7', 'R->' ]
+        , 6: [ '6' ]
+        , '7,8,R->': [ '7', '8', 'R->' ]
+        , 'R->b R': [ 'R->b R' ]
+        , 'T\'\'->T\' $': [ 'T\'\'->T\' $' ]
+        , 'T\'->T': [ 'T\'->T' ]
+        , 'T->R': [ 'T->R' ]
+        , 'T->a T c': [ 'T->a T c' ]
+        }
+      }
     , 'Macrostates should not collide even if they share an accept state')
 
 })

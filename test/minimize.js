@@ -2,7 +2,7 @@ var test = require('tape')
   , Fragment = require('../lib/fragment')
 
 test('minimize', function (t) {
-  t.plan(11)
+  t.plan(14)
 
   var nfa = new Fragment({
               initial: 0
@@ -18,7 +18,8 @@ test('minimize', function (t) {
               , 7: ['a', 0, 'b', 5]
               }
             })
-    , dfa = new Fragment(nfa.minimize(','))
+    , minimalDfa = nfa.minimize(',')
+    , dfa = new Fragment(minimalDfa)
 
   t.ok(nfa.test('abbbabaa'), 'nfa should accept abbbabaa')
   t.ok(nfa.test('aaa'), 'nfa should accept aaa')
@@ -40,5 +41,21 @@ test('minimize', function (t) {
       '4': [ 'a', 1, 'b', 3 ],
       pancake: [ 'a', 3 ]
     }, 'Transitions should be remapped with accept state preserved')
-  t.end()
+
+  nfa = new Fragment({
+              initial: 'A'
+            , accept: ['C']
+            , transitions: {
+                A: ['\x00', 'B', 'a', 'C']
+              , B: ['a', 'C']
+              , C: []
+              }
+            })
+
+  minimalDfa = nfa.minimize(',')
+  dfa = new Fragment(minimalDfa)
+
+  t.ok(dfa.test('a'), 'minimal dfa should accept a')
+  t.ok(!dfa.test('b'), 'minimal dfa should not accept b')
+  t.ok(!dfa.test('aa'), 'minimal dfa should not accept aa')
 })
