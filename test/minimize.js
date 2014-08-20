@@ -2,7 +2,7 @@ var test = require('tape')
   , Fragment = require('../lib/fragment')
 
 test('minimize', function (t) {
-  t.plan(15)
+  t.plan(16)
 
   var nfa = new Fragment({
               initial: 0
@@ -60,4 +60,53 @@ test('minimize', function (t) {
   t.ok(!dfa.test('aa'), 'minimal dfa should not accept aa')
   t.deepEqual(minimalDfa.aliasMap, { '1': [ 'A', 'B' ], C: [ 'C' ] }
     , 'aliasMap should survive the nfa -> dfa -> minimization process')
+
+  nfa = new Fragment({
+          initial: 'A|D|F|H|L|M',
+          accept: [ 'E', 'G', 'F|H|I|L|M', 'L|M|N', 'O', 'K', 'C' ],
+          transitions:
+          { 'A|D|F|H|L|M': [ 'T\'', 'B', 'T', 'E', 'R', 'G', 'a', 'F|H|I|L|M', 'b', 'L|M|N' ],
+          'L|M|N': [ 'b', 'L|M|N', 'R', 'O' ],
+          O: [],
+          'F|H|I|L|M': [ 'R', 'G', 'a', 'F|H|I|L|M', 'T', 'J', 'b', 'L|M|N' ],
+          J: [ 'c', 'K' ],
+          K: [],
+          G: [],
+          E: [],
+          B: [ -1, 'C' ],
+          C: [] },
+          aliasMap:
+          { 'A|D|F|H|L|M': [ 'A', 'D', 'F', 'H', 'L', 'M' ],
+          'L|M|N': [ 'L', 'M', 'N' ],
+          O: [ 'O' ],
+          'F|H|I|L|M': [ 'F', 'H', 'I', 'L', 'M' ],
+          J: [ 'J' ],
+          K: [ 'K' ],
+          G: [ 'G' ],
+          E: [ 'E' ],
+          B: [ 'B' ],
+          C: [ 'C' ] }
+        })
+
+  minimalDfa = nfa.minimize(',')
+
+  t.deepEqual(minimalDfa
+  , {
+    initial: 3,
+    accept: [ 'C', 'F|H|I|L|M', 'L|M|N' ],
+    transitions:
+     { '3': [ 'T\'', 5, 'T', 'C', 'R', 'C', 'a', 'F|H|I|L|M', 'b', 'L|M|N' ],
+       '4': [ 'c', 'C' ],
+       '5': [ -1, 'C' ],
+       'L|M|N': [ 'b', 'L|M|N', 'R', 'C' ],
+       C: [],
+       'F|H|I|L|M': [ 'R', 'C', 'a', 'F|H|I|L|M', 'T', 4, 'b', 'L|M|N' ] },
+    aliasMap:
+     { '3': [ 'A|D|F|H|L|M' ],
+       '4': [ 'J' ],
+       '5': [ 'B' ],
+       'L|M|N': [ 'L|M|N' ],
+       C: [ 'O', 'K', 'G', 'E', 'C' ],
+       'F|H|I|L|M': [ 'F|H|I|L|M' ] }
+  }, 'The aliasMap should correctly merge macrostates from the nfa->dfa stage')
 })
