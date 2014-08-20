@@ -3,7 +3,7 @@ var test = require('tape')
   , nfa2dfa = require('../lib/nfa2dfa')
 
 test('nfa2dfa', function (t) {
-  t.plan(4)
+  t.plan(5)
 
   // Example taken from:
   // http://binarysculpting.com/2012/02/15/converting-dfa-to-nfa-by-subset-construction-regular-expressions-part-2
@@ -127,4 +127,22 @@ test('nfa2dfa', function (t) {
       }
     , 'Macrostates should not collide even if they share an accept state')
 
+  nfa = new Fragment({
+            initial: 'A',
+            accept: [ 'D' ],
+            transitions:
+            {
+              A: ['\x00', 'B', '\x00', 'C']
+            , B: ['a', 'D']
+            , C: ['a', 'D']
+            , D: []
+            }
+           })
+
+  t.deepEqual(nfa2dfa(nfa, ','), {
+    initial: 'A,B,C',
+    accept: [ 'D' ],
+    transitions: { 'A,B,C': [ 'a', 'D' ], D: [] },
+    aliasMap: { 'A,B,C': [ 'A', 'B', 'C' ], D: [ 'D' ] }
+  }, 'Should properly derive merged states')
 })
